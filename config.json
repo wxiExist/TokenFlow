@@ -1,0 +1,7 @@
+
+{
+    "model_name": "gpt2",
+    "max_tokens": 50,
+    "input_prompt": "Hello, how are you?"
+  }
+  
