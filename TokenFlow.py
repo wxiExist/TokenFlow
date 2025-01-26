@@ -20,11 +20,16 @@ with open(args.config, "r") as config_file:
 model_name = config["model_name"]
 max_tokens = config.get("max_tokens", 50)  # Default to 50 if not set
 
+# Check if CUDA is available
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(Fore.GREEN + f"Using device: {device}")
+
 # Load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name).to(device)  # Move model to GPU 
 
 print(Fore.GREEN + "TokenFlow is running. Type your prompt below (type 'exit' to quit):")
+
 
 while True:
     input_prompt = input(Fore.BLUE + "PROMPT: " + Style.RESET_ALL)
@@ -32,8 +37,8 @@ while True:
         print(Fore.RED + "Goodbye!")
         break
 
-    # Tokenize inp
-    input_ids = tokenizer.encode(input_prompt, return_tensors="pt")
+    # Tokenize inp and move to device
+    input_ids = tokenizer.encode(input_prompt, return_tensors="pt").to(device)
 
     # Token-by-token generation with timing
     output_ids = input_ids.clone()
@@ -46,11 +51,11 @@ while True:
         output_ids = torch.cat([output_ids, next_token], dim=-1)
         print(tokenizer.decode(next_token[0]), end="", flush=True)
 
-    print()  # For spacing between responses
-    end_time = time.time()  # End timing
+    print()  #
+    end_time = time.time()
 
     # Statistics
-    total_tokens = output_ids.size(1) - input_ids.size(1)  # Num of gen tokens
+    total_tokens = output_ids.size(1) - input_ids.size(1)
     generation_time = end_time - start_time
     tokens_per_second = total_tokens / generation_time if generation_time > 0 else 0
 
