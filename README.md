@@ -6,7 +6,7 @@
 
 ## Features
 - **Real-time token streaming**: Watch the text generate token by token for an interactive experience.
-- **Local model support**: Use any Hugging Face-compatible model, from small GPT-2 to large GPT-Neo models.
+- **Local model support**: Use any Hugging Face-compatible model, from small GPT-2 to large GPT models.
 - **Customizable configurations**: Configure model name and generation parameters through a JSON file.
 - **Interactive conversation**: Keep the session alive and chat endlessly without restarting the script.
 
