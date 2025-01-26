@@ -16,6 +16,7 @@
 - Python 3.8 or higher
 - PyTorch
 - Hugging Face `transformers` library
+- colorama 
 
 ---
 
